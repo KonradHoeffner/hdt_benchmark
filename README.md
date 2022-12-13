@@ -1,3 +1,12 @@
+This is a fork of the Sophia benchmarking to compare "normal" Sophia (FastGraph and LightGraph) with the HDT Sophia adapter.
+I couldn't get everything to work so I leave out the other libraries.
+The old values are still in the notebook, only the query part is updated.
+The old and new values are not comparable because I test on an Intel i9-12900k.
+The person data files need to be converted to HDT for the HDT test to work.
+Original readme below.
+Known bug: Logging text from HDT needs to be manually removed from the HDT CSV file.
+
+
 # Benchmarking for Sophia
 
 This is an environment for benchmarking the [sophia] library,

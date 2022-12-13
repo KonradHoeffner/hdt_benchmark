@@ -5,11 +5,12 @@ import os
 import subprocess
 import sys
 
-os.chdir(os.path.dirname(sys.argv[0]))
+#os.chdir(os.path.dirname(sys.argv[0]))
 
 TOOLS = {
     "sophia":         "./b_sophia/run     {task} '{filename}'",
     "sophia_lg":      "./b_sophia/run     {task} '{filename}' light",
+    "sophia_hdt":     "./b_sophia/run     {task} '{filename}' hdt",
     "librdf":         "./b_librdf/run     {task} '{filename}'",
     "librdf-ttl":     "./b_librdf/run     {task} '{filename}' turtle",
     "jena":           "./b_jena/run       {task} '{filename}'",
@@ -24,8 +25,8 @@ FILES = [
     ("./data/persondata_en_40k.ttl",    40_000),
     ("./data/persondata_en_80k.ttl",    80_000),
     ("./data/persondata_en_100k.ttl",  100_000),
-    #("./data/persondata_en_1M.ttl",  1_000_000),
-    #("./data/persondata_en.ttl",    10_310_000),
+    ("./data/persondata_en_1M.ttl",  1_000_000),
+    ("./data/persondata_en.ttl",    10_310_000),
 ]
 
 LIMITS = {
