@@ -21,7 +21,8 @@ use hdt::{HdtGraph,Hdt};
 
 fn get_vmsize() -> usize {
     let status = fs::read_to_string("/proc/self/status").unwrap();
-    let vmsize_re = Regex::new(r"VmSize:\s*([0-9]+) kB").unwrap();
+    //let vmsize_re = Regex::new(r"VmSize:\s*([0-9]+) kB").unwrap();
+    let vmsize_re = Regex::new(r"VmRSS:\s*([0-9]+) kB").unwrap();
     let vmsize = vmsize_re.captures(&status).unwrap().get(1).unwrap().as_str();
     usize::from_str(vmsize).unwrap()
 }
@@ -41,7 +42,6 @@ fn task_query (filename: &str, variant: Option<&str>)
             task_query_g(f, LightGraph::new(), 1);
         }
         Some("hdt") => {
-        println!("{}",filename.replace("ttl","hdt"));
             let f = fs::File::open(&filename.replace("ttl","hdt")).expect("Error opening file");
             let f = io::BufReader::new(f);
             task_query_hdt(f, 1);
