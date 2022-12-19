@@ -7,6 +7,8 @@ Original readme below.
 Known bug: Logging text from HDT needs to be manually removed from the HDT CSV file.
 
 
+
+
 # Benchmarking for Sophia
 
 This is an environment for benchmarking the [sophia] library,
@@ -28,6 +30,16 @@ type `make` in the root directory of the project
 (see [`benchmark_results.ipynb`](./benchmark_results.ipynb) for dependencies).
 To re-generate the CSV files,
 use the `run_benchmark` command with the appropriate arguments.
+
+### Further Requirements
+
+#### n3js
+
+    export NODE_OPTIONS=--max_old_space_size=16000
+
+#### librdf
+
+pacman -S redland
 
 ## Adding libraries to the benchmark
 

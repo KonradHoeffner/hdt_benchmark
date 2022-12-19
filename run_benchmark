@@ -31,8 +31,8 @@ FILES = [
 
 LIMITS = {
     ("librdf", "query"):   100_000,
-    ("n3js",   "query"): 1_000_000,
-    ("python", "query"): 1_000_000,
+#    ("n3js",   "query"): 1_000_000,
+#    ("python", "query"): 1_000_000,
 }
 
 HEADERS = {
