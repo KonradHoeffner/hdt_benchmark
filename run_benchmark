@@ -30,7 +30,7 @@ FILES = [
 ]
 
 LIMITS = {
-    ("librdf", "query"):   100_000,
+    ("librdf", "query"):   100_000, # 1M didn't finish once in several hours on 12900k
 #    ("n3js",   "query"): 1_000_000,
 #    ("python", "query"): 1_000_000,
 }
