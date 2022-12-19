@@ -69,16 +69,16 @@ def plot_query_stats(data, color_key=color_key, group=False):
     else:
         (ax0, ax1) = (None, None)
 
-    my_plot(data, "t_load", title="Time (in s) to load an NT file in memory", loglog=True, color_key=color_key, ax=ax0)
+    my_plot(data, "t_load", title="Time (in s) to load an NT/HDT file in memory", loglog=True, color_key=color_key, ax=ax0)
     #my_plot(data, "t_load", xlim=(0,200_000), ylim=(0,10), savename="t_load_lin", title="Time (in s) to load an NT file in memory", ax=ax0)
-    my_plot(data, "r_load", title="Load rate (in triple/s) from an NT file in memory", logx=True, color_key=color_key, ax=ax1)
+    my_plot(data, "r_load", title="Load rate (in triple/s) from an NT/HDT file in memory", logx=True, color_key=color_key, ax=ax1)
 
 
     if group:
         _, ax0 = plt.subplots(figsize=(figw, figh), nrows=1, ncols=1)
     else:
         ax0 = None
-    my_plot(data, 'm_graph', title="Memory (in kB) used while allocating for the graph", loglog=True, exclude=['jena (java)'], color_key=color_key, ax=ax0)
+    my_plot(data, 'm_graph', title="Memory (in kB, RSS) used while allocating for the graph", loglog=True, exclude=['jena (java)'], color_key=color_key, ax=ax0)
     
     if group:
         _, (ax0, ax1) = plt.subplots(figsize=(figw*2, figh), nrows=1, ncols=2)
