@@ -11,4 +11,4 @@ members = [".", ]
 sophia = "0.7.2"
 time = "*"
 regex =  "1.7.0"
-hdt = "0.0.7"
+hdt = "0.0.8"

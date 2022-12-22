@@ -78,7 +78,7 @@ fn task_query_hdt<R> (f: R, query_num: usize) where
     let m0 = get_vmsize();
     let t0 = OffsetDateTime::now();
     let hdt = Hdt::new(std::io::BufReader::new(f)).expect("error loading HDT");
-    let g = HdtGraph::new(hdt);
+    let g = HdtGraph::<std::rc::Rc<str>>::new(hdt);
     let t1 = OffsetDateTime::now();
     let m1 = get_vmsize();
     let time_parse = (t1-t0).as_seconds_f64();
