@@ -6,9 +6,6 @@ The person data files need to be converted to HDT for the HDT test to work.
 Original readme below.
 Known bug: Logging text from HDT needs to be manually removed from the HDT CSV file.
 
-
-
-
 # Benchmarking for Sophia
 
 This is an environment for benchmarking the [sophia] library,

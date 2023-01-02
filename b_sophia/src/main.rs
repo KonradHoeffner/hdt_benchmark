@@ -65,6 +65,11 @@ fn task_query2(filename: &str, variant: Option<&str>)
         Some("light") => {
             task_query_g(f, LightGraph::new(), 2);
         }
+        Some("hdt") => {
+            let f = fs::File::open(&filename.replace("ttl","hdt")).expect("Error opening file");
+            let f = io::BufReader::new(f);
+            task_query_hdt(f, 2);
+        }
         Some(v) => {
             eprintln!("Unknown variant {}", v);
             process::exit(1);
@@ -76,10 +81,10 @@ fn task_query_hdt<R> (f: R, query_num: usize) where
     R: io::BufRead,
 {
     let m0 = get_vmsize();
-    let t0 = OffsetDateTime::now();
+    let t0 = OffsetDateTime::now_utc();
     let hdt = Hdt::new(std::io::BufReader::new(f)).expect("error loading HDT");
     let g = HdtGraph::<std::rc::Rc<str>>::new(hdt);
-    let t1 = OffsetDateTime::now();
+    let t1 = OffsetDateTime::now_utc();
     let m1 = get_vmsize();
     let time_parse = (t1-t0).as_seconds_f64();
     let mem_graph = m1-m0;
@@ -89,7 +94,7 @@ fn task_query_hdt<R> (f: R, query_num: usize) where
     let time_rest;
     let dbo_person = BoxTerm::new_iri_unchecked("http://dbpedia.org/ontology/Person".to_owned());
     let dbr_vincent = BoxTerm::new_iri_unchecked("http://dbpedia.org/resource/Vincent_Descombes_Sevoie".to_owned());
-    let mut t0 = OffsetDateTime::now();
+    let mut t0 = OffsetDateTime::now_utc();
     let results = match query_num {
         1 => g.triples_with_po(&rdf::type_, &dbo_person),
         _ => g.triples_with_s(&dbr_vincent),
@@ -98,13 +103,13 @@ fn task_query_hdt<R> (f: R, query_num: usize) where
     let mut c = 0;
     for _ in results {
         if c == 0 {
-            let t1 = OffsetDateTime::now();
+            let t1 = OffsetDateTime::now_utc();
             time_first = (t1-t0).as_seconds_f64();
-            t0 = OffsetDateTime::now();
+            t0 = OffsetDateTime::now_utc();
         }
         c += 1;
     }
-    let t1 = OffsetDateTime::now();
+    let t1 = OffsetDateTime::now_utc();
     time_rest = (t1-t0).as_seconds_f64();
     eprintln!("matching triple: {}\n", c);
 
@@ -116,9 +121,9 @@ fn task_query_g<G, R> (f: R, mut g: G, query_num: usize) where
     G: MutableGraph,
 {
     let m0 = get_vmsize();
-    let t0 = OffsetDateTime::now();
+    let t0 = OffsetDateTime::now_utc();
     g.insert_all(nt::parse_bufread(f)).expect("Error parsing NT file");
-    let t1 = OffsetDateTime::now();
+    let t1 = OffsetDateTime::now_utc();
     let m1 = get_vmsize();
     let time_parse = (t1-t0).as_seconds_f64();
     let mem_graph = m1-m0;
@@ -129,7 +134,7 @@ fn task_query_g<G, R> (f: R, mut g: G, query_num: usize) where
     let dbo_person = Term::<&'static str>::new_iri("http://dbpedia.org/ontology/Person").unwrap();
     let dbr_vincent = Term::<&'static str>::new_iri("http://dbpedia.org/resource/Vincent_Descombes_Sevoie").unwrap();
 
-    let mut t0 = OffsetDateTime::now();
+    let mut t0 = OffsetDateTime::now_utc();
     let results = match query_num {
         1 => g.triples_with_po(&rdf::type_, &dbo_person),
         _ => g.triples_with_s(&dbr_vincent),
@@ -138,13 +143,13 @@ fn task_query_g<G, R> (f: R, mut g: G, query_num: usize) where
     let mut c = 0;
     for _ in results {
         if c == 0 {
-            let t1 = OffsetDateTime::now();
+            let t1 = OffsetDateTime::now_utc();
             time_first = (t1-t0).as_seconds_f64();
-            t0 = OffsetDateTime::now();
+            t0 = OffsetDateTime::now_utc();
         }
         c += 1;
     }
-    let t1 = OffsetDateTime::now();
+    let t1 = OffsetDateTime::now_utc();
     time_rest = (t1-t0).as_seconds_f64();
     eprintln!("matching triple: {}\n", c);
 
@@ -170,9 +175,9 @@ fn task_parse (filename: &str, variant: Option<&str>) {
 fn task_parse_nt (filename: &str) {
     let f = fs::File::open(&filename).expect("Error opening file");
     let f = io::BufReader::new(f);
-    let t0 = OffsetDateTime::now();
+    let t0 = OffsetDateTime::now_utc();
     nt::parse_bufread(f).for_each_triple(|_| ()).expect("Error parsing NT file");
-    let t1 = OffsetDateTime::now();
+    let t1 = OffsetDateTime::now_utc();
     let time_parse = (t1-t0).as_seconds_f64();
     println!("{}", time_parse);
 }
@@ -180,10 +185,10 @@ fn task_parse_nt (filename: &str) {
 fn task_parse_hdt (filename: &str) {
     let f = fs::File::open(&filename.replace("ttl","hdt")).expect("Error opening file");
     let f = io::BufReader::new(f);
-    let t0 = OffsetDateTime::now();
+    let t0 = OffsetDateTime::now_utc();
     hdt::Hdt::new(f).unwrap();
     //t::parse_bufread(f).for_each_triple(|_| ()).expect("Error parsing NT file");
-    let t1 = OffsetDateTime::now();
+    let t1 = OffsetDateTime::now_utc();
     let time_parse = (t1-t0).as_seconds_f64();
     println!("{}", time_parse);
 }

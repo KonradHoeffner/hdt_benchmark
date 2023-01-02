@@ -61,7 +61,7 @@ def my_plot(data, attr_name, *, exclude=[], savename=None, color_key=color_key, 
         ax.get_figure().savefig("figures/{}.svg".format(savename))
     return ax
 
-def plot_query_stats(data, color_key=color_key, group=False):
+def plot_query_stats(data, color_key=color_key, group=False, task="query"):
     figw = FIGW
     figh = FIGH
     if group:
@@ -69,24 +69,29 @@ def plot_query_stats(data, color_key=color_key, group=False):
     else:
         (ax0, ax1) = (None, None)
 
-    my_plot(data, "t_load", title="Time (in s) to load an NT/HDT file in memory", loglog=True, color_key=color_key, ax=ax0)
-    #my_plot(data, "t_load", xlim=(0,200_000), ylim=(0,10), savename="t_load_lin", title="Time (in s) to load an NT file in memory", ax=ax0)
-    my_plot(data, "r_load", title="Load rate (in triple/s) from an NT/HDT file in memory", logx=True, color_key=color_key, ax=ax1)
+    if task=="query":
+        my_plot(data, "t_load", title="Time (in s) to load an NT/HDT file in memory", loglog=True, color_key=color_key, ax=ax0)
+        #my_plot(data, "t_load", xlim=(0,200_000), ylim=(0,10), savename="t_load_lin", title="Time (in s) to load an NT file in memory", ax=ax0)
+        my_plot(data, "r_load", title="Load rate (in triple/s) from an NT/HDT file in memory", logx=True, color_key=color_key, ax=ax1)
 
-
-    if group:
-        _, ax0 = plt.subplots(figsize=(figw, figh), nrows=1, ncols=1)
-    else:
-        ax0 = None
-    my_plot(data, 'm_graph', title="Memory (in kB, RSS) used while allocating for the graph", loglog=True, color_key=color_key, ax=ax0)
+        if group:
+            _, ax0 = plt.subplots(figsize=(figw, figh), nrows=1, ncols=1)
+        else:
+            ax0 = None
+        my_plot(data, 'm_graph', title="Memory (in kB, RSS) used while allocating for the graph", loglog=True, color_key=color_key, ax=ax0)
     
-    if group:
-        _, (ax0, ax1) = plt.subplots(figsize=(figw*2, figh), nrows=1, ncols=2)
-    else:
-        (ax0, ax1) = (None, None)
+        if group:
+            _, (ax0, ax1) = plt.subplots(figsize=(figw*2, figh), nrows=1, ncols=2)
+        else:
+            (ax0, ax1) = (None, None)
 
-    my_plot(data, 't_first', title="Time (in s) to retrieve the first matching triple (*,p,o)", loglog=True, color_key=color_key, ax=ax0)
-    my_plot(data, 't_query', title="Time (in s) to retrieve all matching triples (*,p,o)", loglog=True, color_key=color_key, ax=ax1)
+    if task=="query":
+        pattern = "(*,p,o)"
+    else:
+        pattern = "(s,*,*)" 
+
+    my_plot(data, 't_first', title="Time (in s) to retrieve the first matching triple " + pattern, loglog=True, color_key=color_key, ax=ax0)
+    my_plot(data, 't_query', title="Time (in s) to retrieve all matching triples" + pattern, loglog=True, color_key=color_key, ax=ax1)
     #my_plot(data, 't_query', xlim=(0,1_000_000), ylim=(0, 0.1), title="Time (in s) to retrieve all matching triples (*,p,o)", savename="t_query_lin", ax=ax1)
 
 def plot_parse_stats(data, color_key=color_key, group=False):
