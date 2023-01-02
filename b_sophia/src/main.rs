@@ -41,6 +41,11 @@ fn task_query (filename: &str, variant: Option<&str>)
             let f = io::BufReader::new(f);
             task_query_g(f, LightGraph::new(), 1);
         }
+        Some("sophia_hdt") => {
+            let f = fs::File::open(&filename.replace("ttl","hdt")).expect("Error opening file");
+            let f = io::BufReader::new(f);
+            task_query_sophia_hdt(f, 1);
+        }
         Some("hdt") => {
             let f = fs::File::open(&filename.replace("ttl","hdt")).expect("Error opening file");
             let f = io::BufReader::new(f);
@@ -65,6 +70,11 @@ fn task_query2(filename: &str, variant: Option<&str>)
         Some("light") => {
             task_query_g(f, LightGraph::new(), 2);
         }
+        Some("sophia_hdt") => {
+            let f = fs::File::open(&filename.replace("ttl","hdt")).expect("Error opening file");
+            let f = io::BufReader::new(f);
+            task_query_sophia_hdt(f, 2);
+        }
         Some("hdt") => {
             let f = fs::File::open(&filename.replace("ttl","hdt")).expect("Error opening file");
             let f = io::BufReader::new(f);
@@ -83,12 +93,51 @@ fn task_query_hdt<R> (f: R, query_num: usize) where
     let m0 = get_vmsize();
     let t0 = OffsetDateTime::now_utc();
     let hdt = Hdt::new(std::io::BufReader::new(f)).expect("error loading HDT");
+    let t1 = OffsetDateTime::now_utc();
+    let m1 = get_vmsize();
+    let time_parse = (t1-t0).as_seconds_f64();
+    let mem_graph = m1-m0;
+    eprintln!("loaded {hdt:?}");
+
+    let mut time_first: f64 = 0.0;
+    let time_rest;
+    let dbo_person = "http://dbpedia.org/ontology/Person";
+    let dbr_vincent = "http://dbpedia.org/resource/Vincent_Descombes_Sevoie";
+    let mut t0 = OffsetDateTime::now_utc();
+    let type_ = rdf::type_.value();
+    let results = match query_num {
+        1 => Box::new(hdt.triples_with_po(&type_, dbo_person)),
+        _ => hdt.triples_with(dbr_vincent,&hdt::IdKind::Subject),
+    };
+
+    let mut c = 0;
+    for _ in results {
+        if c == 0 {
+            let t1 = OffsetDateTime::now_utc();
+            time_first = (t1-t0).as_seconds_f64();
+            t0 = OffsetDateTime::now_utc();
+        }
+        c += 1;
+    }
+    let t1 = OffsetDateTime::now_utc();
+    time_rest = (t1-t0).as_seconds_f64();
+    eprintln!("matching triple: {}\n", c);
+
+    println!("{},{},{},{}", time_parse, mem_graph, time_first, time_rest);
+}
+
+fn task_query_sophia_hdt<R> (f: R, query_num: usize) where
+    R: io::BufRead,
+{
+    let m0 = get_vmsize();
+    let t0 = OffsetDateTime::now_utc();
+    let hdt = Hdt::new(std::io::BufReader::new(f)).expect("error loading HDT");
     let g = HdtGraph::<std::rc::Rc<str>>::new(hdt);
     let t1 = OffsetDateTime::now_utc();
     let m1 = get_vmsize();
     let time_parse = (t1-t0).as_seconds_f64();
     let mem_graph = m1-m0;
-    eprintln!("loaded  : ~ {:?} triples\n", g.triples().size_hint());
+    //eprintln!("loaded  : ~ {:?} triples\n", g.triples().size_hint());
 
     let mut time_first: f64 = 0.0;
     let time_rest;
@@ -127,7 +176,7 @@ fn task_query_g<G, R> (f: R, mut g: G, query_num: usize) where
     let m1 = get_vmsize();
     let time_parse = (t1-t0).as_seconds_f64();
     let mem_graph = m1-m0;
-    eprintln!("loaded  : ~ {:?} triples\n", g.triples().size_hint());
+    //eprintln!("loaded  : ~ {:?} triples\n", g.triples().size_hint());
 
     let mut time_first: f64 = 0.0;
     let time_rest;
