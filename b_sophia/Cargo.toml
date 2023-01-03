@@ -1,8 +1,8 @@
-
 [package]
 name = "sophia_benchmark"
-version = "0.2.0"
-authors = ["Pierre-Antoine Champin <pchampin@liris.cnrs.fr>"]
+version = "0.3.0"
+authors = ["Pierre-Antoine Champin <pchampin@liris.cnrs.fr>", "Konrad Höffner"]
+edition = "2021"
 
 [workspace]
 members = [".", ]

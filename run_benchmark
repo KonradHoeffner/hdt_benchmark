@@ -40,6 +40,17 @@ HEADERS = {
     "parse": "t_parse",
     "query": "t_load,m_graph,t_first,t_rest",
     "query2": "t_load,m_graph,t_first,t_rest",
+    "query3": "t_load,m_graph,t_first,t_rest",
+    "query4": "t_load,m_graph,t_first,t_rest",
+    "query5": "t_load,m_graph,t_first,t_rest",
+    "query6": "t_load,m_graph,t_first,t_rest",
+    "query7": "t_load,m_graph,t_first,t_rest",
+    "query8": "t_load,m_graph,t_first,t_rest",
+    "query9": "t_load,m_graph,t_first,t_rest",
+    "query10": "t_load,m_graph,t_first,t_rest",
+    "query11": "t_load,m_graph,t_first,t_rest",
+    "query12": "t_load,m_graph,t_first,t_rest",
+    "query13": "t_load,m_graph,t_first,t_rest",
 }
 
 def main():
