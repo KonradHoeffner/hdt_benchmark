@@ -19,6 +19,7 @@ color_key = {
     "sophia_lg": "darkorange",
     "sophia_hdt": "yellow",
     "hdt_rs": "fuchsia",
+    "hdt_java": "darkgray",
     "librdf (c)": "purple",
     "jena (java)": "black",
     "n3js (js)": "blue",
