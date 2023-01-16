@@ -1,6 +1,7 @@
 use std::io::Write;
 use std::str::FromStr;
 use std::{env, fs, io, process};
+use std::rc::Rc;
 
 extern crate regex;
 use regex::Regex;
@@ -67,7 +68,7 @@ where
 {
     let m0 = get_vmsize();
     let t0 = OffsetDateTime::now_utc();
-    let hdt = Hdt::new(std::io::BufReader::new(f)).expect("error loading HDT");
+    let hdt = Hdt::<Rc<str>>::new(std::io::BufReader::new(f)).expect("error loading HDT");
     let t1 = OffsetDateTime::now_utc();
     let m1 = get_vmsize();
     let time_parse = (t1 - t0).as_seconds_f64();
@@ -125,8 +126,8 @@ where
 {
     let m0 = get_vmsize();
     let t0 = OffsetDateTime::now_utc();
-    let hdt = Hdt::new(std::io::BufReader::new(f)).expect("error loading HDT");
-    let g = HdtGraph::<std::rc::Rc<str>>::new(hdt);
+    let hdt = Hdt::<Rc<str>>::new(std::io::BufReader::new(f)).expect("error loading HDT");
+    let g = HdtGraph::new(hdt);
     let t1 = OffsetDateTime::now_utc();
     let m1 = get_vmsize();
     let time_parse = (t1 - t0).as_seconds_f64();
@@ -268,7 +269,7 @@ fn task_parse_hdt(filename: &str) {
     let f = fs::File::open(&filename.replace("ttl", "hdt")).expect("Error opening file");
     let f = io::BufReader::new(f);
     let t0 = OffsetDateTime::now_utc();
-    hdt::Hdt::new(f).unwrap();
+    hdt::Hdt::<Rc<str>>::new(f).unwrap();
     //t::parse_bufread(f).for_each_triple(|_| ()).expect("Error parsing NT file");
     let t1 = OffsetDateTime::now_utc();
     let time_parse = (t1 - t0).as_seconds_f64();
@@ -293,8 +294,8 @@ fn main() {
         None
     };
     eprintln!("filename: {}", filename);
-    let mut query_num = 0;
-    if task_id.starts_with("query") {
+    let mut query_num = 1;
+    if task_id.starts_with("query") && task_id.len() > 5 {
         query_num = task_id
             .split("query")
             .nth(1)
