@@ -52,8 +52,11 @@ public class HdtJavaBenchmark {
 
         long t0, t1;
         t0 = System.nanoTime();
-
+		// HDT Java writes directly to stdout so this is the only way we can turn it off
+		PrintStream original = System.out;
+		System.setOut(new PrintStream(new FileOutputStream("/dev/null")));
         HDT hdt = HDTManager.loadIndexedHDT(args[1].replaceAll("ttl","hdt"), null);
+		System.setOut(original);
 		System.err.println(args[1].replaceAll("ttl","hdt"));
         t1 = System.nanoTime();
         m1 = get_memory_footprint();

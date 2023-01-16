@@ -13,6 +13,7 @@ TOOLS = {
     "sophia_hdt":     "./b_sophia/run     {task} '{filename}' sophia_hdt",
     "hdt_rs":     "./b_sophia/run     {task} '{filename}' hdt",
     "hdt_java":     "./b_hdt_java/run     {task} '{filename}'",
+    "hdt_cpp":     "./b_hdt_cpp/run.sh     {task} '{filename}'",
     "librdf":         "./b_librdf/run     {task} '{filename}'",
     "librdf-ttl":     "./b_librdf/run     {task} '{filename}' turtle",
     "jena":           "./b_jena/run       {task} '{filename}'",
@@ -76,7 +77,7 @@ def main():
     if tool not in TOOLS:
         print("available tools: " + ", ".join(TOOLS), file=sys.stderr)
         exit(3)
-
+    
 
     csv = "csv/{}-{}-{}.csv".format(task, tool,
         str(datetime.datetime.now())[:19].replace(' ', '-').replace(':', '-'),
