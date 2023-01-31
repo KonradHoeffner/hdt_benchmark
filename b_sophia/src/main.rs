@@ -1,7 +1,6 @@
 use std::io::Write;
 use std::str::FromStr;
 use std::{env, fs, io, process};
-use std::rc::Rc;
 
 extern crate regex;
 use regex::Regex;
@@ -10,12 +9,10 @@ extern crate time;
 use time::OffsetDateTime;
 
 extern crate sophia;
-use sophia::graph::inmem::*;
-use sophia::graph::*;
+use sophia::api::graph::*;
+use sophia::api::term::*;
 use sophia::ns::rdf;
 use sophia::parser::nt;
-use sophia::term::*;
-use sophia::triple::stream::*;
 extern crate hdt;
 use hdt::{Hdt, HdtGraph, IdKind};
 
@@ -68,7 +65,7 @@ where
 {
     let m0 = get_vmsize();
     let t0 = OffsetDateTime::now_utc();
-    let hdt = Hdt::<Rc<str>>::new(std::io::BufReader::new(f)).expect("error loading HDT");
+    let hdt = Hdt::new(std::io::BufReader::new(f)).expect("error loading HDT");
     let t1 = OffsetDateTime::now_utc();
     let m1 = get_vmsize();
     let time_parse = (t1 - t0).as_seconds_f64();
@@ -126,7 +123,7 @@ where
 {
     let m0 = get_vmsize();
     let t0 = OffsetDateTime::now_utc();
-    let hdt = Hdt::<Rc<str>>::new(std::io::BufReader::new(f)).expect("error loading HDT");
+    let hdt = Hdt::new(std::io::BufReader::new(f)).expect("error loading HDT");
     let g = HdtGraph::new(hdt);
     let t1 = OffsetDateTime::now_utc();
     let m1 = get_vmsize();
@@ -148,14 +145,13 @@ where
       15748 "James"@en .
       15431 <http://dbpedia.org/resource/London> .
     */
-    let dbo_person = BoxTerm::new_iri_unchecked("http://dbpedia.org/ontology/Person".to_owned());
+    let dbo_person = SimpleTerm::from("http://dbpedia.org/ontology/Person".into());
     let dbr_vincent = BoxTerm::new_iri_unchecked(
         "http://dbpedia.org/resource/Vincent_Descombes_Sevoie".to_owned(),
     );
-    let dbo_gender = BoxTerm::new_iri_unchecked("http://dbpedia.org/ontology/gender".to_owned());
-    let dbr_paris = BoxTerm::new_iri_unchecked("http://dbpedia.org/resource/Paris".to_owned());
-    let dbo_birthplace =
-        BoxTerm::new_iri_unchecked("http://dbpedia.org/ontology/birthPlace".to_owned());
+    let dbo_gender = SimpleTerm::from("http://dbpedia.org/ontology/gender".into());
+    let dbr_paris = SimpleTerm::from("http://dbpedia.org/resource/Paris".into());
+    let dbo_birthplace = SimpleTerm::from("http://dbpedia.org/ontology/birthPlace".into());
     let male = BoxTerm::new_literal_lang_unchecked("male", "en");
     let female = BoxTerm::new_literal_lang_unchecked("female", "en");
     let queer = BoxTerm::new_literal_lang_unchecked("genderqueer", "en");
@@ -269,7 +265,7 @@ fn task_parse_hdt(filename: &str) {
     let f = fs::File::open(&filename.replace("ttl", "hdt")).expect("Error opening file");
     let f = io::BufReader::new(f);
     let t0 = OffsetDateTime::now_utc();
-    hdt::Hdt::<Rc<str>>::new(f).unwrap();
+    hdt::Hdt::new(f).unwrap();
     //t::parse_bufread(f).for_each_triple(|_| ()).expect("Error parsing NT file");
     let t1 = OffsetDateTime::now_utc();
     let time_parse = (t1 - t0).as_seconds_f64();
