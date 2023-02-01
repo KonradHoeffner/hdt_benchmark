@@ -20,6 +20,7 @@ color_key = {
     "sophia_hdt": "yellow",
     "hdt_rs": "fuchsia",
     "hdt_java": "darkgray",
+    "hdt_cpp": "lightgreen",
     "librdf (c)": "purple",
     "jena (java)": "black",
     "n3js (js)": "blue",
@@ -93,7 +94,8 @@ def plot_query_stats(data, color_key=color_key, group=False, task="query"):
         pattern = "(s,*,*)" 
 
     my_plot(data, 't_first', title="Time (in s) to retrieve the first matching triple " + pattern, loglog=True, color_key=color_key, ax=ax0)
-    my_plot(data, 't_query', title="Time (in s) to retrieve all matching triples" + pattern, loglog=True, color_key=color_key, ax=ax1)
+    my_plot(data, 't_query', title="Time (in s) to retrieve all matching triples " + pattern, loglog=True, color_key=color_key, ax=ax1)
+    #my_plot(data, 't_query', xlim=(1_000_000,10_310_000), ylim=(0.0001,1), title="Time (in s) to retrieve all matching triples (large only) " + pattern, loglog=True, color_key=color_key, ax=ax1)
     #my_plot(data, 't_query', xlim=(0,1_000_000), ylim=(0, 0.1), title="Time (in s) to retrieve all matching triples (*,p,o)", savename="t_query_lin", ax=ax1)
 
 def plot_parse_stats(data, color_key=color_key, group=False):

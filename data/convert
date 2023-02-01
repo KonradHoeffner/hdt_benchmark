@@ -1,0 +1,7 @@
+for f in ./persondata_en_10k.ttl
+do
+   echo "Converting $f to HDT"
+   rdf2hdt -p -f turtle $f $f.hdt
+   hdt2rdf -p -f turtle $f.hdt $f.tmp.ttl
+   rdf2hdt -p -f turtle $f.tmp.ttl $f.hdt
+done
