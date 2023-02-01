@@ -76,7 +76,6 @@ where R: io::BufRead {
     */
     let mut t0 = OffsetDateTime::now_utc();
     let type_ = rdf::type_.to_string();
-    println!("RDF TYPE URI CHECK {type_}");
     let results = match query_num {
         1 => hdt.triples_with_pattern(None, Some(&type_), Some(dbo_person)),
         2 => hdt.triples_with_pattern(Some(dbr_vincent), None, None),
