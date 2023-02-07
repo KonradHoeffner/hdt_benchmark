@@ -51,26 +51,25 @@ public class HdtJavaBenchmark {
         m0 = get_memory_footprint();
 
         long t0, t1;
+        // HDT Java writes directly to stdout so this is the only way we can turn it off
+        PrintStream original = System.out;
+        System.setOut(new PrintStream(new FileOutputStream("/dev/null")));
         t0 = System.nanoTime();
-		// HDT Java writes directly to stdout so this is the only way we can turn it off
-		PrintStream original = System.out;
-		System.setOut(new PrintStream(new FileOutputStream("/dev/null")));
         HDT hdt = HDTManager.loadIndexedHDT(args[1].replaceAll("ttl","hdt"), null);
-		System.setOut(original);
-		System.err.println(args[1].replaceAll("ttl","hdt"));
         t1 = System.nanoTime();
         m1 = get_memory_footprint();
         time_load = (t1 - t0) / 1e9;
         mem_graph = m1 - m0;
-        t0 = System.nanoTime();
+        System.setOut(original);
+        System.err.println(args[1].replaceAll("ttl","hdt"));
         String personClass = "http://dbpedia.org/ontology/Person";
         String vincent = "http://dbpedia.org/resource/Vincent_Descombes_Sevoie";
         String rdfType = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"; 
         long nb_stmts = 0;
-        
-		try {
+        t0 = System.nanoTime();
+        try {
             IteratorTripleString it;
-			//= hdt.search("", "", "");
+            //= hdt.search("", "", "");
             if (queryNum == 1) {
                 it = hdt.search("", rdfType, personClass);
             } else {// if (queryNum == 2) {
@@ -79,6 +78,11 @@ public class HdtJavaBenchmark {
             
             while(it.hasNext()) {
                 TripleString ts = it.next();
+                // force DelayedString to be built into String
+                // this slows it down from 210ms to 300 ms
+                /*ts.getSubject().toString();
+                ts.getPredicate().toString();
+                ts.getObject().toString();*/
                 nb_stmts += 1;
                 if (nb_stmts == 1) {
                     t1 = System.nanoTime();
@@ -88,10 +92,9 @@ public class HdtJavaBenchmark {
                 //System.out.println(ts);
             }
         } finally {
+            t1 = System.nanoTime();
             hdt.close();
         }
-
-        t1 = System.nanoTime();
         time_rest = (t1 - t0) / 1e9;
 
         //System.err.println("parsed: " + model.size() + " statements");

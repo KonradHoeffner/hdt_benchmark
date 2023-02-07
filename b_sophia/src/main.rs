@@ -7,11 +7,11 @@ use sophia::api::prelude::TripleSource;
 use sophia::api::term::*;
 use sophia::inmem::graph::{FastGraph, LightGraph};
 use sophia::turtle::parser::nt;
+use std::hint::black_box;
 use std::io::Write;
 use std::str::FromStr;
 use std::{env, fs, io, process};
 use time::OffsetDateTime;
-//use crate::rdf::type_;
 
 fn get_vmsize() -> usize {
     let status = fs::read_to_string("/proc/self/status").unwrap();
@@ -74,8 +74,8 @@ where R: io::BufRead {
     let female = "female@\"en\"";
     let queer = "genderqueer@\"en\"";
     */
-    let mut t0 = OffsetDateTime::now_utc();
     let type_ = rdf::type_.to_string();
+    let mut t0 = OffsetDateTime::now_utc();
     let results = match query_num {
         1 => hdt.triples_with_pattern(None, Some(&type_), Some(dbo_person)),
         2 => hdt.triples_with_pattern(Some(dbr_vincent), None, None),
@@ -96,7 +96,8 @@ where R: io::BufRead {
     };
 
     let mut c = 0;
-    for _ in results {
+    for r in results {
+        black_box(r);
         if c == 0 {
             let t1 = OffsetDateTime::now_utc();
             time_first = (t1 - t0).as_seconds_f64();
@@ -169,7 +170,9 @@ where R: io::BufRead {
     };
 
     let mut c = 0;
-    for _ in results {
+    #[allow(unused_must_use)]
+    for r in results {
+        black_box(r);
         if c == 0 {
             let t1 = OffsetDateTime::now_utc();
             time_first = (t1 - t0).as_seconds_f64();
@@ -211,7 +214,9 @@ where
     };
 
     let mut c = 0;
-    for _ in results {
+    #[allow(unused_must_use)]
+    for r in results {
+        black_box(r);
         if c == 0 {
             let t1 = OffsetDateTime::now_utc();
             time_first = (t1 - t0).as_seconds_f64();
