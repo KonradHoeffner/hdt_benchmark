@@ -12,8 +12,8 @@ ${HDT_JAVA}:
 	#rm ${HDT_JAVA}.tar.gz
 	#sed -i 's|INFO|OFF|' "${HDT_JAVA}/log4j2.properties"
 
-HdtJavaBenchmark.class: ${HDT_JAVA} HdtJavaBenchmark.java
-	javac -cp "`./cp.sh`" HdtJavaBenchmark.java
+HdtJavaBenchmark.class: ${HDT_JAVA} src/HdtJavaBenchmark.java
+	javac -cp "`./cp.sh`" src/HdtJavaBenchmark.java -d .
 
 .PHONY: clean
 clean:
