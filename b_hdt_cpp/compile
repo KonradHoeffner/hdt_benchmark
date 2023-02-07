@@ -1,2 +1,2 @@
 # requires hdt-cpp to be installed on the system, see https://github.com/rdfhdt/hdt-cpp
-libtool --mode=link g++ -O3 /usr/local/lib/libhdt.la ../b_librdf/measures.c run.cpp -o run
+libtool --mode=link g++ -O3 -march=native /usr/local/lib/libhdt.la ../b_librdf/measures.c run.cpp -o run
