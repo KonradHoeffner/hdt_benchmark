@@ -56,6 +56,7 @@ public class HdtJavaBenchmark {
         System.setOut(new PrintStream(new FileOutputStream("/dev/null")));
         t0 = System.nanoTime();
         HDT hdt = HDTManager.loadIndexedHDT(args[1].replaceAll("ttl","hdt"), null);
+        //for(int i=0;i<200;i++) {
         t1 = System.nanoTime();
         m1 = get_memory_footprint();
         time_load = (t1 - t0) / 1e9;
@@ -69,7 +70,6 @@ public class HdtJavaBenchmark {
         t0 = System.nanoTime();
         try {
             IteratorTripleString it;
-            //= hdt.search("", "", "");
             if (queryNum == 1) {
                 it = hdt.search("", rdfType, personClass);
             } else {// if (queryNum == 2) {
@@ -78,11 +78,12 @@ public class HdtJavaBenchmark {
             
             while(it.hasNext()) {
                 TripleString ts = it.next();
+                //System.out.println(ts);
                 // force DelayedString to be built into String
-                // this slows it down from 210ms to 300 ms
-                /*ts.getSubject().toString();
+                // this slows it down from 210ms to 300 ms and should allow a fair comparison to other libraries that also return strings
+                ts.getSubject().toString();
                 ts.getPredicate().toString();
-                ts.getObject().toString();*/
+                ts.getObject().toString();
                 nb_stmts += 1;
                 if (nb_stmts == 1) {
                     t1 = System.nanoTime();
@@ -93,13 +94,15 @@ public class HdtJavaBenchmark {
             }
         } finally {
             t1 = System.nanoTime();
-            hdt.close();
+            //hdt.close();
         }
         time_rest = (t1 - t0) / 1e9;
 
         //System.err.println("parsed: " + model.size() + " statements");
         System.err.println("matched: " + nb_stmts + " statements");
         System.out.println(time_load + "," + mem_graph + "," + time_first + "," + time_rest);
+        //}
+        hdt.close();
     }
 
     public static void benchmark_test(String[] args) {
