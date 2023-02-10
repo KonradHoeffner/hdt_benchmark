@@ -17,6 +17,7 @@ alias = {
 color_key = {
     "sophia": "red",
     "sophia_lg": "darkorange",
+    "hdt_cpp": "lightgreen",
     "librdf (c)": "purple",
     "jena (java)": "black",
     "n3js (js)": "blue",

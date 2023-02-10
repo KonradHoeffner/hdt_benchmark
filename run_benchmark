@@ -10,6 +10,7 @@ os.chdir(os.path.dirname(sys.argv[0]))
 TOOLS = {
     "sophia":         "./b_sophia/run     {task} '{filename}'",
     "sophia_lg":      "./b_sophia/run     {task} '{filename}' light",
+    "hdt_cpp":     "./b_hdt_cpp/run.sh     {task} '{filename}'",
     "librdf":         "./b_librdf/run     {task} '{filename}'",
     "librdf-ttl":     "./b_librdf/run     {task} '{filename}' turtle",
     "jena":           "./b_jena/run       {task} '{filename}'",

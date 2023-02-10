@@ -20,6 +20,13 @@ type `make` in the root directory of the project
 To re-generate the CSV files,
 use the `run_benchmark` command with the appropriate arguments.
 
+## Further Requirements
+
+### hdt-cpp
+
+* install [hdt-cpp](https://github.com/rdfhdt/hdt-cpp)
+* convert the Turtle test files to HDT files
+
 ## Adding libraries to the benchmark
 
 If you want to add another library to the benchmark,
