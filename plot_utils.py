@@ -100,6 +100,39 @@ def plot_query_stats(data, color_key=color_key, group=False, task="query"):
     
     #my_plot(data, 't_query', xlim=(0,1_000_000), ylim=(0, 0.1), title="Time (in s) to retrieve all matching triples (*,p,o)", savename="t_query_lin", ax=ax1)
 
+def plot_table(*tools):
+    dfs = []
+    for tool in tools:
+        try:
+            df = pd.read_csv("csv/{}-{}.csv".format("query", tool))
+            df = df[df['size'] == 10310000]
+            df = df.mean(numeric_only=True).to_frame().T
+            df['tool'] = alias.get(tool, tool)
+
+            dfs.append(df)
+        except FileNotFoundError as ex:
+            print(ex, file=sys.stderr)
+    df = pd.concat(dfs)
+    df.index = range(len(df.index))
+    
+    df['t_query'] = (df.t_first + df.t_rest)
+    df['r_load'] = (df['size'] / df.t_load)
+    df['m_graph'] = (df['m_graph'] / 1000).round()
+    df = df.filter(items=['tool', 'm_graph', 't_load', 't_query'])
+
+    fig, ax = plt.subplots()
+    # hide axes
+    fig.patch.set_visible(False)
+    ax.axis('off')
+    ax.axis('tight')
+    #df = pd.DataFrame(np.random.randn(10, 4), columns=list('ABCD'))
+    table = ax.table(cellText=df.values, colLabels=df.columns, loc='center')
+    table.scale(5, 5)
+    #table.auto_set_font_size(False)
+    #table.set_fontsize(14)
+    #fig.tight_layout()
+    plt.show()
+   
 def plot_parse_stats(data, color_key=color_key, group=False):
     figw = FIGW
     figh = FIGH
