@@ -30,6 +30,8 @@ use the `run_benchmark` command with the appropriate arguments.
 
 ### Further Requirements
 
+    pip install -r requirements.txt
+
 #### n3js
 
     export NODE_OPTIONS=--max_old_space_size=16000

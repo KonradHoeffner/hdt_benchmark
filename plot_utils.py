@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import sys
+from tabulate import tabulate
 
 import warnings
 warnings.filterwarnings('ignore', message='.*converting a masked element to nan.*')
@@ -115,9 +116,10 @@ def plot_table(*tools):
     df = pd.concat(dfs)
     df.index = range(len(df.index))
     
-    df['t_query'] = (df.t_first + df.t_rest)
-    df['r_load'] = (df['size'] / df.t_load)
-    df['m_graph'] = (df['m_graph'] / 1000).round()
+    df['t_query'] = ((df.t_first + df.t_rest) * 1000).round()
+    #df['r_load'] = (df['size'] / df.t_load)
+    df['m_graph'] = (df['m_graph'] / 1024).round()
+    df['t_load'] = (df['t_load']*1000).round()
     df = df.filter(items=['tool', 'm_graph', 't_load', 't_query'])
 
     fig, ax = plt.subplots()
@@ -131,7 +133,11 @@ def plot_table(*tools):
     #table.auto_set_font_size(False)
     #table.set_fontsize(14)
     #fig.tight_layout()
+    #caption = "Memory in MB. Load time in s. Query time in ms."
+    #plt.figtext(0.5, 0.1, caption, wrap=True, horizontalalignment='left', fontsize=12)
     plt.show()
+    markdown_table = tabulate(df, headers='keys', tablefmt='pipe')
+    print(markdown_table)
    
 def plot_parse_stats(data, color_key=color_key, group=False):
     figw = FIGW
