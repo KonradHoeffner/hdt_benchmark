@@ -7,3 +7,4 @@ all:
 	cd b_python; make
 	cd b_nodejs; make
 	cd b_hdt_cpp; make
+	cd b_hdt_java; make
