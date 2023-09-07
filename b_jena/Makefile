@@ -7,7 +7,7 @@ all: build test
 build: JenaBenchmark.class
 
 ${JENA}:
-	wget https://www-eu.apache.org/dist/jena/binaries/${JENA}.tar.gz
+	curl -OJ https://www-eu.apache.org/dist/jena/binaries/${JENA}.tar.gz
 	tar xzf ${JENA}.tar.gz
 	rm ${JENA}.tar.gz
 	sed -i 's|INFO|OFF|' "${JENA}/log4j2.properties"
