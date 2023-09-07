@@ -1,6 +1,6 @@
 [package]
 name = "sophia_benchmark"
-version = "0.3.2"
+version = "0.3.3"
 authors = ["Pierre-Antoine Champin <pchampin@liris.cnrs.fr>", "Konrad Höffner"]
 edition = "2021"
 
@@ -8,10 +8,10 @@ edition = "2021"
 members = [".", ]
 
 [dependencies]
-sophia = "0.8.0-alpha.0"
+sophia = "0.8.0-alpha.1"
 time = "*"
 regex = "1.7.0"
-hdt = "0.0.13"
+hdt = "0.1.4"
 
 [profile.release]
 lto = "fat"
