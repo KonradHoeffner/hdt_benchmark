@@ -1,4 +1,4 @@
-JENA=apache-jena-4.6.1
+JENA=apache-jena-4.9.0
 
 .PHONY: all
 all: build test

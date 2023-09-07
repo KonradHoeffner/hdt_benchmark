@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# RDFLib 7+ currently displays an isodate error as warning with negative (BC) dates, which can be ignored.
 
 from sys import argv, stderr
 import re
