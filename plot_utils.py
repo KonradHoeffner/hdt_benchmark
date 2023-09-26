@@ -29,6 +29,7 @@ color_key = {
     "sophia_wasm_lg": "red",
     "rdflib (python)": "green",
     "rdflib (pypy)": "darkgreen",
+    "rdf4cpp": "lightblue",
 }
 
 def load_data(task, *tools):

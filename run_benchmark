@@ -20,6 +20,7 @@ TOOLS = {
     "n3js":           "./b_nodejs/n3js.js {task} '{filename}'",
     "python":         "./b_python/run     {task} '{filename}'",
     "pypy":           "./b_python/run     {task} '{filename}' pypy",
+    "rdf4cpp":           "./b_rdf4cpp/run     {task} '{filename}'",
 }
 
 FILES = [
