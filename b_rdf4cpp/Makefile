@@ -7,10 +7,23 @@ test: all
 .PHONY: all
 all: run
 
-# copied over from b_hdt_cpp, adapt to rdf4cpp
-run: run.cpp /usr/local/lib/libhdt.la ../b_librdf/measures.c
-	libtool --mode=link g++ -O3 -march=native /usr/local/lib/libhdt.la ../b_librdf/measures.c run.cpp -o run
+.PHONY: b_rdf4cpp_conan
+b_rdf4cpp_conan:
+	bash conan.sh
+
+.PHONY: b_rdf4cpp_configure
+b_rdf4cpp_configure: b_rdf4cpp_conan
+	cmake -DCMAKE_BUILD_TYPE=Release -B build -DCMAKE_C_FLAGS=" -march=native" -DCMAKE_CXX_FLAGS=" -march=native"
+
+.PHONY: b_rdf4cpp_build
+b_rdf4cpp_build: b_rdf4cpp_configure
+	cmake --build build --parallel
+
+
+
+run: b_rdf4cpp_build
+	cp build/run run
 
 .PHONY: clean
 clean:
-	rm -f run
+	rm -rf run build

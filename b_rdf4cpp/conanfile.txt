@@ -1,0 +1,9 @@
+[requires]
+rdf4cpp/0.0.17
+
+[options]
+boost:header_only=True
+
+[generators]
+CMakeDeps
+CMakeToolchain

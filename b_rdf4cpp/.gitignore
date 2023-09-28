@@ -1,2 +1,4 @@
 *.o
 run
+build
+rdf4cpp_venv
