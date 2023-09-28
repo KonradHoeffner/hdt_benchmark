@@ -20,6 +20,8 @@ find_package(rdf4cpp REQUIRED)
 
 add_executable(run run.cpp)
 
+# target_link_options(run PUBLIC -static)
+
 target_include_directories(run PUBLIC
         ${CMAKE_SOURCE_DIR}) # for measures.h
 
@@ -30,3 +32,4 @@ set_target_properties(run PROPERTIES
         CXX_EXTENSIONS OFF
         CXX_STANDARD_REQUIRED ON
 )
+
