@@ -45,7 +45,7 @@ void query(const std::string &filename, benchmark_queries query) {
                           TriplePattern{Variable("x"), IRI{RDF_TYPE}, IRI{DBO_PERSON}} :
                           TriplePattern{IRI(DBR_VINCENT), Variable("y"), Variable("z")};
     SolutionSequence solutions = g.match(triple_pattern);
-    std::cout << "g size " << g.size() << std::endl;
+    //std::cout << "g size " << g.size() << std::endl;
     for ([[maybe_unused]]const auto &solution: solutions) {
       if (count == 0) {
         time_query_first_result = get_nanosec();
