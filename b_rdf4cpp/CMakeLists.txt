@@ -20,7 +20,7 @@ find_package(rdf4cpp REQUIRED)
 
 add_executable(run run.cpp)
 
-# target_link_options(run PUBLIC -static)
+target_link_options(run PUBLIC -static)
 
 target_include_directories(run PUBLIC
         ${CMAKE_SOURCE_DIR}) # for measures.h
