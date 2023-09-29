@@ -7,7 +7,7 @@ all: build test
 build: HdtJavaBenchmark.class
 
 ${HDT_JAVA}:
-	wget -nc https://github.com/rdfhdt/hdt-java/releases/download/v3.0.9/rdfhdt.tar.gz
+	wget -nc https://github.com/rdfhdt/hdt-java/releases/download/v3.0.10/rdfhdt.tar.gz
 	tar xzf ${HDT_JAVA}.tar.gz
 	#rm ${HDT_JAVA}.tar.gz
 	#sed -i 's|INFO|OFF|' "${HDT_JAVA}/log4j2.properties"
