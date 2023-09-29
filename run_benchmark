@@ -5,6 +5,8 @@ import os
 import subprocess
 import sys
 
+# prevent n3js from crashing on the complete file
+os.environ['NODE_OPTIONS'] = '--max_old_space_size=16000'
 #os.chdir(os.path.dirname(sys.argv[0]))
 
 TOOLS = {
@@ -78,7 +80,7 @@ def main():
     if tool not in TOOLS:
         print("available tools: " + ", ".join(TOOLS), file=sys.stderr)
         exit(3)
-    
+
 
     csv = "csv/{}-{}-{}.csv".format(task, tool,
         str(datetime.datetime.now())[:19].replace(' ', '-').replace(':', '-'),
@@ -110,6 +112,6 @@ def main():
             pass
         os.link(csv, csv_link)
         print("LINKED", csv_link)
-    
+
 
 main()
