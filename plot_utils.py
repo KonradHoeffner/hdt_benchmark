@@ -61,7 +61,9 @@ def my_plot(data, attr_name, *, exclude=[], savename=None, color_key=color_key, 
         except:
             pass
     color = list(means.columns.map(color_key.get))
-    ax = means.plot(yerr=2*stdev, grid=1, color=color, **kw)
+    ax = means.plot(yerr=2*stdev, grid=1, color=color,  **kw)
+    if kw.get("legend")!=False:
+        ax.legend(loc='lower left', bbox_to_anchor=(0.0, -0.4), ncol=4)
     if savename:
         ax.get_figure().savefig("figures/{}.svg".format(savename))
     return ax
@@ -78,15 +80,15 @@ def plot_query_stats(data, color_key=color_key, group=False, task="query"):
         my_plot(data, "t_load", xlim=(10_000,10_350_000), title="Time (in s) to load an NT/HDT file in memory", loglog=True, color_key=color_key, ax=ax0)
 
         #my_plot(data, "t_load", xlim=(0,200_000), ylim=(0,10), savename="t_load_lin", title="Time (in s) to load an NT file in memory", ax=ax0)
-        my_plot(data, "r_load", xlim=(10_000,10_350_000), title="Load rate (in triple/s) from an NT/HDT file in memory", logx=True, color_key=color_key, ax=ax1)
+        my_plot(data, "r_load", xlim=(10_000,10_350_000), title="Load rate (in triple/s) from an NT/HDT file in memory", logx=True, color_key=color_key, ax=ax1, legend=False)
 
         if group:
             _, (ax0, ax1) = plt.subplots(figsize=(figw*2, figh), nrows=1, ncols=2)
         else:
             (ax0, ax1) = (None, None)
 
-        my_plot(data, 'm_graph', xlim=(10_000,10_350_000), title="Memory (in kB, RSS) used while allocating for the graph", loglog=True, color_key=color_key, ax=ax0)
-        my_plot(data, 't_query', xlim=(9_000_000,10_350_000), ylim=(0.26,0.38), title="Time (in s) to retrieve all matching triples (*,p,o), excerpt" , loglog=False, color_key=color_key, ax=ax1)
+        my_plot(data, 'm_graph', xlim=(10_000,10_350_000), title="Memory (in kB, RSS) used while allocating for the graph", loglog=True, color_key=color_key, ax=ax0, legend=False)
+        my_plot(data, 't_query', xlim=(9_000_000,10_350_000), title="Time (in s) to retrieve all matching triples (*,p,o), large" , loglog=False, color_key=color_key, ax=ax1,legend=False)
 
         if group:
             _, (ax0, ax1) = plt.subplots(figsize=(figw*2, figh), nrows=1, ncols=2)
@@ -98,7 +100,7 @@ def plot_query_stats(data, color_key=color_key, group=False, task="query"):
     else:
         pattern = "(s,*,*)"
 
-    my_plot(data, 't_first', xlim=(10_000,10_350_000), title="Time (in s) to retrieve the first matching triple " + pattern, loglog=True, color_key=color_key, ax=ax0)
+    my_plot(data, 't_first', xlim=(10_000,10_350_000), title="Time (in s) to retrieve the first matching triple " + pattern, loglog=True, color_key=color_key, ax=ax0, legend=False)
     my_plot(data, 't_query', xlim=(10_000,10_350_000), title="Time (in s) to retrieve all matching triples " + pattern, loglog=True, color_key=color_key, ax=ax1)
 
     #my_plot(data, 't_query', xlim=(0,1_000_000), ylim=(0, 0.1), title="Time (in s) to retrieve all matching triples (*,p,o)", savename="t_query_lin", ax=ax1)
