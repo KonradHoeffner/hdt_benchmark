@@ -1,0 +1,5 @@
+tools=("sophia" "sophia_lg" "sophia_hdt" "hdt_rs" "hdt_java" "hdt_cpp" "librdf" "jena" "n3js" "python" "rdf4cpp")
+for tool in ${tools[@]}
+do
+	run_benchmark query $tool
+done
