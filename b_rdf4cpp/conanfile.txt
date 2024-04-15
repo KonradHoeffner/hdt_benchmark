@@ -1,5 +1,5 @@
 [requires]
-rdf4cpp/0.0.28
+rdf4cpp/0.0.29
 
 [options]
 boost:header_only=True

@@ -1,4 +1,4 @@
-#include <rdf4cpp/rdf.hpp>
+#include <rdf4cpp.hpp>
 #include <measures.h>
 
 #include <iostream>
@@ -19,10 +19,11 @@ void query(const std::string &filename, benchmark_queries query) {
   std::cerr << "rdf4cpp: Parsing " << filename << std::endl;
   auto const mem_load_start = get_vmsize();
   auto const time_load_start = get_nanosec();
-  rdf4cpp::rdf::Graph g;
+		rdf4cpp::Dataset dataset;
+  auto g=dataset.graph();
   {
-    using namespace rdf4cpp::rdf;
-    for (const auto &e: rdf4cpp::rdf::parser::RDFFileParser{filename}) {
+    using namespace rdf4cpp;
+    for (const auto &e: rdf4cpp::parser::RDFFileParser{filename}) {
       if (e.has_value()) {
         auto const &quad = e.value();
         g.add(Statement{quad.subject(), quad.predicate(), quad.object()});
@@ -40,12 +41,12 @@ void query(const std::string &filename, benchmark_queries query) {
   ulong count = 0;
   // Enumerate all triples matching a pattern
   {
-    using namespace rdf4cpp::rdf;
-    using namespace rdf4cpp::rdf::query;
+    using namespace rdf4cpp;
+    using namespace rdf4cpp::query;
     auto triple_pattern = (query == benchmark_queries::query_1) ?
                           TriplePattern{Variable("x"), IRI{RDF_TYPE}, IRI{DBO_PERSON}} :
                           TriplePattern{IRI(DBR_VINCENT), Variable("y"), Variable("z")};
-    SolutionSequence solutions = g.match(triple_pattern);
+				Graph::solution_sequence solutions = g.match(triple_pattern);
     //std::cout << "g size " << g.size() << std::endl;
     for ([[maybe_unused]]const auto &solution: solutions) {
       if (count == 0) {
@@ -68,7 +69,7 @@ void parse(const std::string &filename) {
   auto const time_start = get_nanosec();
   ulong count = 0;
   {
-    using namespace rdf4cpp::rdf;
+    using namespace rdf4cpp;
     parser::ParsingFlags flags = parser::ParsingFlag::Turtle;
     for (const auto &e: parser::RDFFileParser{filename, flags}) {
       if (e.has_value()) {
